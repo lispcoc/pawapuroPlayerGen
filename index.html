@@ -1,0 +1,212 @@
+<html>
+
+<head>
+    <title>test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        li {
+            list-style: none;
+        }
+        
+        .table {
+            display: flex;
+        }
+        
+        .table div ul {
+            display: table;
+            table-layout: fixed;
+            margin: 10px 0;
+            padding: 0;
+            border: 0;
+            outline: 0;
+            vertical-align: baseline;
+        }
+        
+        .table-first-column {
+            flex-direction: column;
+            padding: 5px 15px 5px 2px;
+            margin-right: 0;
+            border: 1px solid #ccc;
+            background-color: #e8e8e8;
+        }
+        
+        .table-column {
+            flex-direction: column;
+            padding: 5px 15px 5px 2px;
+            margin-right: 0;
+            border: 1px solid #ccc;
+        }
+        
+        .rank {
+            font-weight: bold;
+            font-family: Arial;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="table">
+        <div class="list-row">
+            <ul>
+                <li class="table-first-column">項目</li>
+                <li class="table-column">値</li>
+                <li class="table-column">Min</li>
+                <li class="table-column">Max</li>
+            </ul>
+        </div>
+        <div class="list-row">
+            <ul>
+                <li class="table-first-column">0</li>
+                <li class="table-column">
+                    <div id="stat_0">0</div>
+                </li>
+                <li class="table-column">
+                    <input type="number" name="min_stat0" id="min_stat_0" value="20" style="width:45;" />
+                </li>
+                <li class="table-column">
+                    <input type="number" name="max_stat0" id="max_stat_0" value="50" style="width:45;" />
+                </li>
+            </ul>
+        </div>
+        <div class="list-row">
+            <ul>
+                <li class="table-first-column">1</li>
+                <li class="table-column">
+                    <div id="stat_1">0</div>
+                </li>
+                <li class="table-column">
+                    <input type="number" name="min_stat1" id="min_stat_1" value="20" style="width:45;" />
+                </li>
+                <li class="table-column">
+                    <input type="number" name="max_stat1" id="max_stat_1" value="80" style="width:45;" />
+                </li>
+            </ul>
+        </div>
+        <div class="list-row">
+            <ul>
+                <li class="table-first-column">2</li>
+                <li class="table-column">
+                    <div id="stat_2">0</div>
+                </li>
+                <li class="table-column">
+                    <input type="number" name="min_stat2" id="min_stat_2" value="20" style="width:45;" />
+                </li>
+                <li class="table-column">
+                    <input type="number" name="max_stat2" id="max_stat_2" value="90" style="width:45;" />
+                </li>
+            </ul>
+        </div>
+        <div class="list-row">
+            <ul>
+                <li class="table-first-column">3</li>
+                <li class="table-column">
+                    <div id="stat_3">0</div>
+                </li>
+                <li class="table-column">
+                    <input type="number" name="min_stat3" id="min_stat_3" value="20" style="width:45;" />
+                </li>
+                <li class="table-column">
+                    <input type="number" name="max_stat3" id="max_stat_3" value="90" style="width:45;" />
+                </li>
+            </ul>
+        </div>
+        <div class="list-row">
+            <ul>
+                <li class="table-first-column">4</li>
+                <li class="table-column">
+                    <div id="stat_4">0</div>
+                </li>
+                <li class="table-column">
+                    <input type="number" name="min_stat4" id="min_stat_4" value="20" style="width:45;" />
+                </li>
+                <li class="table-column">
+                    <input type="number" name="max_stat4" id="max_stat_4" value="70" style="width:45;" />
+                </li>
+            </ul>
+        </div>
+        <div class="list-row">
+            <ul>
+                <li class="table-first-column">5</li>
+                <li class="table-column">
+                    <div id="stat_5">0</div>
+                </li>
+                <li class="table-column">
+                    <input type="number" name="min_stat5" id="min_stat_5" value="20" style="width:45;" />
+                </li>
+                <li class="table-column">
+                    <input type="number" name="max_stat5" id="max_stat_5" value="60" style="width:45;" />
+                </li>
+            </ul>
+        </div>
+        <div class="list-row">
+            <ul>
+                <li class="table-first-column">sum</li>
+                <li class="table-column">
+                    <div id="sum">0</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <input type="number" name="minVal" id="minVal" value="150" /> ～
+    <input type="number" name="maxVal" id="maxVal" value="180" />
+    <input id="generateButton" type="button" value="generate">
+    <script>
+        const stats = ["stat_0", "stat_1", "stat_2", "stat_3", "stat_4", "stat_5"];
+        $("#generateButton").click(() => {
+            var minStats = stats.map((v, i) => {
+                return parseInt($("#min_" + v).val());
+            });
+            var maxStats = stats.map((v, i) => {
+                return parseInt($("#max_" + v).val());
+            });
+            var minVal = parseInt($("#minVal").val());
+            var maxVal = parseInt($("#maxVal").val());
+            var tmp = [0, 0, 0, 0, 0, 0];
+            var sum = 0;
+            do {
+                sum = 0
+                stats.forEach((id, i) => {
+                    var val = parseInt(Math.random() * (maxStats[i] - minStats[i] + 1) + minStats[i]);
+                    tmp[i] = val;
+                    sum += eval(parseInt(i / 2), val);
+                });
+            }
+            while (!(sum <= maxVal && sum >= minVal));
+            stats.forEach((id, i) => {
+                $("#" + id).html([rank(tmp[i]), tmp[i]].join(" "));
+            });
+            $("#sum").html(sum);
+        });
+
+        const rank = (val) => {
+            if (val < 20) return '<span class="rank" style="color:#000000">G</span>';
+            if (val < 40) return '<span class="rank" style="color:#4f81bd">F</span>';
+            if (val < 50) return '<span class="rank" style="color:#00b050">E</span>';
+            if (val < 60) return '<span class="rank" style="color:#fbbc00">D</span>';
+            if (val < 70) return '<span class="rank" style="color:#f79646">C</span>';
+            if (val < 80) return '<span class="rank" style="color:#ff0000">B</span>';
+            if (val < 90) return '<span class="rank" style="color:#d99594">A</span>';
+            return '<span class="rank" style="color:#e5b8b7">S</span>';
+        }
+
+        const eval = (type, val) => {
+            if (val < 1) val = 1;
+            if (val > 100) val = 100;
+            return evalArray[type][val - 1];
+        }
+
+        const evalArray = [
+            [
+                0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 30, 31, 33, 34, 36, 37, 39, 40, 42, 43, 45, 46, 48, 49, 51, 52, 54, 55, 57, 59, 61, 63, 65, 67, 69, 71, 73, 75, 77, 79, 82, 84, 87, 89, 92, 94, 97, 99, 102, 105, 108, 111, 114, 117, 120, 123, 126, 129, 132, 135, 139, 142, 146, 149, 153, 156, 160, 163, 167
+            ],
+            [
+                0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 5, 5, 6, 6, 7, 8, 8, 9, 9, 10, 11, 11, 12, 12, 13, 14, 14, 15, 15, 16, 17, 17, 18, 19, 20, 21, 22, 23, 24, 24, 26, 26, 27, 28, 29, 30, 31, 32, 33, 33, 35, 36, 37, 38, 39, 41, 42, 43, 44, 45, 47, 48, 50, 51, 53, 54, 56, 57, 59, 60, 62, 63, 65, 67, 69, 71, 72, 74, 76, 78, 80, 81, 84, 86, 88, 90, 92, 94, 96, 98, 101
+            ],
+            [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 4, 5, 5, 5, 6, 6, 7, 7, 7, 8, 8, 9, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 16, 17, 17, 18, 18, 19, 19, 20, 21, 21, 22, 23, 23, 24, 25, 26, 27, 27, 28, 29, 30, 31, 31, 33, 33, 35, 35, 37, 37, 39, 39, 41, 42, 43, 44, 45, 47, 48, 49, 50, 51, 53, 54, 55, 57, 58, 59, 61, 62, 64, 65, 67
+            ]
+        ];
+    </script>
+</body>
+
+</html>
